@@ -1,4 +1,4 @@
-export const domains = [
+export const mockDomains = [
   {
     "id": "1",
     "name": "example.com",

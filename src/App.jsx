@@ -2,8 +2,9 @@ import './App.css';
 import TokenSelector from "./components/TokenSelector";
 import { Web3 } from "web3";
 import { ChainlinkPlugin, MainnetPriceFeeds } from '@chainsafe/web3-plugin-chainlink';
-import { useEffect } from 'react';
-import { domains } from './data/domains';
+import { useEffect, useState } from 'react';
+import { mockDomains } from './data/domains';
+import { useReadLocalStorage } from 'usehooks-ts';
 
 // const web3 = new Web3('https://rpc-sepolia.rockx.com');
 const web3 = new Web3();
@@ -12,12 +13,17 @@ const chainlinkPlugin = new ChainlinkPlugin();
 web3.registerPlugin(chainlinkPlugin);
 
 function App() {
+  const [domains, setDomains] = useState(mockDomains);
+  const token = useReadLocalStorage('PREFERRED_TOKEN');
+
   useEffect(() => {
     // Get price
-    web3.chainlink.getPrice(MainnetPriceFeeds.UsdcUsd)
-      .then(price => console.log(price.answer.toString()))
+    web3.chainlink.getPrice(MainnetPriceFeeds[token?.id] || MainnetPriceFeeds.UsdcUsd)
+      .then(price => {
+        setDomains(mockDomains.map(domain => ({ ...domain, price: domain.price * (price.answer.toString() / (token?.decimal || 18)) })));
+      })
       .catch(console.log);
-  }, []);
+  }, [token]);
 
   return (
     <div className='min-h-full'>
@@ -40,7 +46,7 @@ function App() {
                   <img alt="" src={`https://ui-avatars.com/api/?name=${domain.name}`} className="h-12 w-12 flex-none rounded-full bg-gray-50" />
                   <div className="min-w-0 flex-auto">
                     <p className="text-sm font-semibold leading-6 text-gray-900">{domain.name}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{domain.email}</p>
+                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{domain.price} {token?.name || 'USDC'}</p>
                   </div>
                 </div>
                 <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
