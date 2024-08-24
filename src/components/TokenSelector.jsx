@@ -8,25 +8,25 @@ const tokens = [
   {
     id: "UsdcUsd",
     name: 'USDC',
-    decimal: 18,
+    decimal: 6 + 2,
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ43MuDqq54iD1ZCRL_uthAPkfwSSL-J5qI_Q&s',
   },
   {
     id: "BtcUsd",
     name: 'BTC',
-    decimal: 18,
+    decimal: 8 + 2,
     avatar: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
   },
   {
     id: "EthUsd",
     name: 'ETH',
-    decimal: 18,
+    decimal: 18 + 2,
     avatar: 'https://images.seeklogo.com/logo-png/52/1/ethereum-logo-png_seeklogo-527153.png',
   },
   {
     id: "BnbUsd",
     name: 'BNB',
-    decimal: 18,
+    decimal: 8 + 2,
     avatar: 'https://w7.pngwing.com/pngs/1007/775/png-transparent-bnb-cryptocurrencies-icon.png',
   }
 ]

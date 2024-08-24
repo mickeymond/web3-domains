@@ -20,7 +20,7 @@ function App() {
     // Get price
     web3.chainlink.getPrice(MainnetPriceFeeds[token?.id] || MainnetPriceFeeds.UsdcUsd)
       .then(price => {
-        setDomains(mockDomains.map(domain => ({ ...domain, price: domain.price * (price.answer.toString() / (token?.decimal || 18)) })));
+        setDomains(mockDomains.map(domain => ({ ...domain, price: domain.price * (price.answer.toString() / (10 ** (token?.decimal || 18))) })));
       })
       .catch(console.log);
   }, [token]);
@@ -45,14 +45,14 @@ function App() {
                 <div className="flex min-w-0 gap-x-4">
                   <img alt="" src={`https://ui-avatars.com/api/?name=${domain.name}`} className="h-12 w-12 flex-none rounded-full bg-gray-50" />
                   <div className="min-w-0 flex-auto">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">{domain.name}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{domain.price} {token?.name || 'USDC'}</p>
+                    <p className="text-lg font-semibold leading-6 text-gray-900">{domain.name}</p>
+                    <p className="mt-1 truncate text-sm font-bold leading-5 text-gray-500">{domain.price} {token?.name || 'USDC'}</p>
                   </div>
                 </div>
                 <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
                   <p className="text-sm leading-6 text-gray-900">{domain.role}</p>
                   {domain.lastSeen ? (
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
+                    <p className="mt-1 text-sm font-bold leading-5 text-gray-500">
                       Last seen <time dateTime={domain.lastSeenDateTime}>{domain.lastSeen}</time>
                     </p>
                   ) : (
@@ -60,7 +60,7 @@ function App() {
                       <div className="flex-none rounded-full bg-emerald-500/20 p-1">
                         <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                       </div>
-                      <p className="text-xs leading-5 text-gray-500">Online</p>
+                      <p className="text-sm font-bold leading-5 text-gray-500">Online</p>
                     </div>
                   )}
                 </div>
